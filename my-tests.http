@@ -1,0 +1,33 @@
+get http://localhost:7000/users
+
+####
+
+get http://localhost:7000/users/62a649058ae77b41b9af6d82
+
+####
+
+post http://localhost:7000/users
+Content-Type: application/json
+
+{
+    "firstName": "Manzi",
+    "lastName" : "Cedric",
+    "gender" : "male",
+    "email" : "mcedro@gmail.com",
+    "password" : "hastup"
+}
+####
+
+put http://localhost:7000/users/62a649058ae77b41b9af6d82
+Content-Type: application/json
+
+{
+    "firstName": "Kalisa",
+    "lastName" : "Cedric",
+    "gender" : "male",
+    "password" : "hastupo"
+}
+
+####
+
+delete http://localhost:7000/users/62a649058ae77b41b9af6d82
