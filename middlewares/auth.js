@@ -6,7 +6,6 @@ exports.auth = (req,res,next)=>{
         req.user = verify(req.header('Authorization')?.split(' ')[1] || "",process.env.JWT_SECRET);
         next();
     } catch (error) {
-        console.log(error)
         return res.status(401).send("Unauthorized")
     }
 }
