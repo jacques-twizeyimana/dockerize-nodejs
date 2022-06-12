@@ -19,8 +19,9 @@
 
 */
 
-const { hash, genSalt } = require('bcryptjs');
-const { User, validateUser,validateUserUpdate } = require('../models/user')
+const { hash, genSalt, compare } = require('bcryptjs');
+const { sign } = require('jsonwebtoken');
+const { User, validateUser, validateUserUpdate, validateLogin } = require('../models/user')
 
 exports.getAllUsers = async (req, res) => {
     try {
@@ -100,7 +101,7 @@ exports.updateUser = async (req, res) => {
     }
 }
 
-exports.deleteUserById = async(req,res) => {
+exports.deleteUserById = async (req, res) => {
     try {
         const user = await User.findOneAndDelete({ _id: req.params.id });
         if (!user) {
@@ -110,5 +111,34 @@ exports.deleteUserById = async(req,res) => {
 
     } catch (error) {
         return res.status(404).send("user not found");
+    }
+}
+
+exports.loginUser = async (req, res) => {
+    try {
+        const { error } = validateLogin(req.body);
+        if (error) {
+            return res.status(400).send(error.details[0].message);
+        }
+
+        const user = await User.findOne({ email: req.body.email });
+        if (!user) {
+            return res.status(400).send("invalid credentials");
+        }
+
+        if (! await compare(req.body.password, user.password))
+            return res.status(400).send("invalid credentials");
+
+        return res.send({
+            accessToken: await sign({
+                id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                gender: user.gender
+            }, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24 * 1000 })
+        })
+
+    } catch (error) {
+        return res.status(500).send(error.toString);
     }
 }

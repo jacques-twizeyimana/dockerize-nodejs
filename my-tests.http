@@ -18,8 +18,9 @@ Content-Type: application/json
 }
 ####
 
-put http://localhost:7000/users/62a649058ae77b41b9af6d82
+put http://localhost:7000/users/62a65126fe933b08abfc017e
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYTY1MTI2ZmU5MzNiMDhhYmZjMDE3ZSIsImZpcnN0TmFtZSI6Ik1hbnppIiwibGFzdE5hbWUiOiJDZWRyaWMiLCJnZW5kZXIiOiJtYWxlIiwiaWF0IjoxNjU1MDY3MzE4LCJleHAiOjE3NDE0NjczMTh9.OLEKgpbK8rNVHBk_C0sK4eIcBdxUhitlLzK2ukM5yV0
 
 {
     "firstName": "Kalisa",
@@ -31,3 +32,13 @@ Content-Type: application/json
 ####
 
 delete http://localhost:7000/users/62a649058ae77b41b9af6d82
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYTY1MTI2ZmU5MzNiMDhhYmZjMDE3ZSIsImZpcnN0TmFtZSI6Ik1hbnppIiwibGFzdE5hbWUiOiJDZWRyaWMiLCJnZW5kZXIiOiJtYWxlIiwiaWF0IjoxNjU1MDY3MzE4LCJleHAiOjE3NDE0NjczMTh9.OLEKgpbK8rNVHBk_C0sK4eIcBdxUhitlLzK2ukM5yV0
+####
+
+post http://localhost:7000/users/login
+Content-Type: application/json
+
+{
+    "email" : "mcedro@gmail.com",
+    "password" : "hastup"
+}
