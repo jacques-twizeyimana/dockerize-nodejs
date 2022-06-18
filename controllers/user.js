@@ -13,7 +13,7 @@
         try {
 
         } catch (error) {
-            return res.status(500).send(error.toString())
+            return res.status(500).send({message:berror.toString()})
         }
     }
 
@@ -30,7 +30,7 @@ exports.getAllUsers = async (req, res) => {
         return res.send(users);
 
     } catch (error) {
-        return res.status(500).send(error.toString())
+        return res.status(500).send({ message: error.toString() })
     }
 }
 
@@ -38,12 +38,12 @@ exports.getUserById = async (req, res) => {
     try {
         const user = await User.findOne({ _id: req.params.id });
         if (!user) {
-            return res.status(404).send("user not found");
+            return res.status(404).send({ message: "user not found" });
         }
         return res.send(user);
 
     } catch (error) {
-        return res.status(404).send("user not found");
+        return res.status(404).send({ message: "user not found" });
     }
 }
 
@@ -51,12 +51,12 @@ exports.createUser = async (req, res) => {
     try {
         const { error } = validateUser(req.body);
         if (error) {
-            return res.status(400).send(error.details[0].message);
+            return res.status(400).send({ message: error.details[0].message });
         }
 
         const duplicateUser = await User.findOne({ email: req.body.email });
         if (duplicateUser) {
-            return res.status(400).send("email already exists");
+            return res.status(400).send({ message: "email already exists" });
         }
 
         req.body.password = await hash(req.body.password, await genSalt(10));
@@ -68,7 +68,7 @@ exports.createUser = async (req, res) => {
         return res.status(201).send(user);
 
     } catch (error) {
-        return res.status(500).send(error.toString());
+        return res.status(500).send({ message: error.toString() });
     }
 }
 
@@ -77,12 +77,12 @@ exports.updateUser = async (req, res) => {
 
         const { error } = validateUserUpdate(req.body);
         if (error) {
-            return res.status(400).send(error.details[0].message);
+            return res.status(400).send({ message: error.details[0].message });
         }
 
         const duplicateUser = await User.findOne({ _id: { $ne: req.param.id }, email: req.body.email });
         if (duplicateUser) {
-            return res.status(400).send("email already exists");
+            return res.status(400).send({ message: "email already exists" });
         }
 
         if (req.body.password)
@@ -90,14 +90,14 @@ exports.updateUser = async (req, res) => {
 
         const user = await User.findOneAndUpdate({ _id: req.params.id }, req.body);
         if (!user) {
-            return res.status(404).send("user not found");
+            return res.status(404).send({ message: "user not found" });
         }
 
         return res.send(user)
 
 
     } catch (error) {
-        return res.status(404).send("user not found");
+        return res.status(404).send({ message: "user not found" });
     }
 }
 
@@ -105,12 +105,12 @@ exports.deleteUserById = async (req, res) => {
     try {
         const user = await User.findOneAndDelete({ _id: req.params.id });
         if (!user) {
-            return res.status(404).send("user not found");
+            return res.status(404).send({ message: "user not found" });
         }
         return res.send(user);
 
     } catch (error) {
-        return res.status(404).send("user not found");
+        return res.status(404).send({ message: "user not found" });
     }
 }
 
@@ -118,16 +118,16 @@ exports.loginUser = async (req, res) => {
     try {
         const { error } = validateLogin(req.body);
         if (error) {
-            return res.status(400).send(error.details[0].message);
+            return res.status(400).send({ message: error.details[0].message });
         }
 
         const user = await User.findOne({ email: req.body.email });
         if (!user) {
-            return res.status(400).send("invalid credentials");
+            return res.status(400).send({ message: "invalid credentials" });
         }
 
         if (! await compare(req.body.password, user.password))
-            return res.status(400).send("invalid credentials");
+            return res.status(400).send({ message: "invalid credentials" });
 
         return res.send({
             accessToken: await sign({
@@ -139,6 +139,6 @@ exports.loginUser = async (req, res) => {
         })
 
     } catch (error) {
-        return res.status(500).send(error.toString);
+        return res.status(500).send({ message: error.toString });
     }
 }
