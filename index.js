@@ -18,6 +18,16 @@ app.use(cors());
 // use express to parse request body into json
 app.use(express.json());
 
+// import swagger doc
+const swaggerUi = require('swagger-ui-express'),swaggerDocument = require('./swagger.json');
+
+// serve the documentation
+app.use(
+    '/api-docs',
+    swaggerUi.serve, 
+    swaggerUi.setup(swaggerDocument)
+  );
+
 // add routes
 app.use("/users",userRoutes);
 
