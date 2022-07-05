@@ -40,7 +40,7 @@ function Login() {
       <div className="flex">
         <div className="centered">
           <form onSubmit={handleLogin}>
-            <div className="title">Signin</div>
+            <div className="title">Login</div>
             <div className="subtitle flex">
               Don't have an account?
               <NavLink to="/register" className="link">
